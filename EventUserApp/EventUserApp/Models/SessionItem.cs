@@ -1,0 +1,36 @@
+namespace EventUserApp.Models;
+
+/// <summary>A session as shown on the event details page.</summary>
+public class SessionItem
+{
+    public SessionItem(SessionDto dto)
+    {
+        Name = dto.Name ?? "";
+        Time = dto.Time ?? "";
+        Speaker = dto.Speaker ?? "";
+        Room = dto.Room ?? "";
+        Type = dto.Type ?? "";
+        Description = dto.Description ?? "";
+    }
+
+    public string Name { get; }
+    public string Time { get; }
+    public string Speaker { get; }
+    public string Room { get; }
+    public string Type { get; }
+    public string Description { get; }
+
+    /// <summary>"09:00 · Workshop"</summary>
+    public string MetaText => JoinNonEmpty(" \u00B7 ", Time, Type);
+
+    /// <summary>"Speaker: Dr Lee · Room: B2" (only the parts that were entered)</summary>
+    public string PeopleText => JoinNonEmpty(" \u00B7 ",
+        Speaker.Length > 0 ? $"Speaker: {Speaker}" : "",
+        Room.Length > 0 ? $"Room: {Room}" : "");
+
+    public bool HasPeople => PeopleText.Length > 0;
+    public bool HasDescription => Description.Length > 0;
+
+    private static string JoinNonEmpty(string separator, params string[] parts) =>
+        string.Join(separator, parts.Where(p => p.Length > 0));
+}
