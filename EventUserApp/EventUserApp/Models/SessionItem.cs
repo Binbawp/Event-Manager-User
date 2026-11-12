@@ -28,6 +28,7 @@ public class SessionItem
         Speaker.Length > 0 ? $"Speaker: {Speaker}" : "",
         Room.Length > 0 ? $"Room: {Room}" : "");
 
+    public bool HasType => Type.Length > 0;
     public bool HasPeople => PeopleText.Length > 0;
     public bool HasDescription => Description.Length > 0;
 

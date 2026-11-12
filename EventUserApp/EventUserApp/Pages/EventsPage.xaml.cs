@@ -9,6 +9,10 @@ public partial class EventsPage : ContentPage
     private bool _hasLoadedOnce;
     private bool _lastLoadFailed;
 
+    /// <summary>Which chip is selected above the list.</summary>
+    private enum DateFilter { All, Upcoming, Past }
+    private DateFilter _dateFilter = DateFilter.All;
+
     public EventsPage(EventService eventService)
     {
         InitializeComponent();
@@ -68,14 +72,44 @@ public partial class EventsPage : ContentPage
         ApplyFilter();
     }
 
-    /// <summary>Shows only the events whose name or date contains the search text.</summary>
+    /// <summary>The user tapped All / Upcoming / Past: remember it, restyle the chips and refilter.</summary>
+    private void OnChipClicked(object? sender, EventArgs e)
+    {
+        _dateFilter = sender == chipUpcoming ? DateFilter.Upcoming
+                    : sender == chipPast ? DateFilter.Past
+                    : DateFilter.All;
+
+        SetChipStyle(chipAll, _dateFilter == DateFilter.All);
+        SetChipStyle(chipUpcoming, _dateFilter == DateFilter.Upcoming);
+        SetChipStyle(chipPast, _dateFilter == DateFilter.Past);
+        ApplyFilter();
+    }
+
+    /// <summary>Yellow chip when selected, dark chip otherwise.</summary>
+    private static void SetChipStyle(Button chip, bool selected)
+    {
+        string key = selected ? "ChipSelected" : "Chip";
+        if (Application.Current?.Resources.TryGetValue(key, out object? style) == true && style is Style s)
+        {
+            chip.Style = s;
+        }
+    }
+
+    /// <summary>Shows only the events that match the selected chip and contain the search text in name or date.</summary>
     private void ApplyFilter()
     {
         string query = searchBar.Text?.Trim() ?? "";
 
+        IEnumerable<EventItem> source = _dateFilter switch
+        {
+            DateFilter.Upcoming => _eventService.Events.Where(ev => !ev.IsPast),
+            DateFilter.Past => _eventService.Events.Where(ev => ev.IsPast),
+            _ => _eventService.Events
+        };
+
         List<EventItem> items = query.Length == 0
-            ? _eventService.Events
-            : _eventService.Events.Where(ev => ev.Matches(query)).ToList();
+            ? source.ToList()
+            : source.Where(ev => ev.Matches(query)).ToList();
         eventsList.ItemsSource = items;
 
         // What the list says when it has nothing to show
@@ -83,7 +117,7 @@ public partial class EventsPage : ContentPage
         {
             eventsList.EmptyView = "Could not load events.\nCheck your internet connection and pull down to try again.";
         }
-        else if (query.Length > 0)
+        else if (query.Length > 0 || _dateFilter != DateFilter.All)
         {
             eventsList.EmptyView = "No events match your search.";
         }

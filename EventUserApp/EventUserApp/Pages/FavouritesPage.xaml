@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Second tab: only the events the user marked with the star (feature h). -->
+<!-- Second tab: only the events the user marked with the heart (feature h). -->
 <ContentPage
     x:Class="EventUserApp.Pages.FavouritesPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:models="clr-namespace:EventUserApp.Models"
     xmlns:views="clr-namespace:EventUserApp.Views"
-    Title="Favourites">
+    Title="Event Assistant"
+    BackgroundColor="{StaticResource AppBackground}">
 
-    <CollectionView x:Name="favouritesList"
-                    SelectionMode="Single"
-                    SelectionChanged="OnEventSelected"
-                    EmptyView="No favourites yet.&#10;Tap the star on an event to add it here.">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="models:EventItem">
-                <views:EventCard />
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+    <Grid RowDefinitions="Auto,*">
+
+        <VerticalStackLayout Grid.Row="0" Padding="20,8,20,12" Spacing="2">
+            <Label Text="Saved for later" Style="{StaticResource Caption}" />
+            <Label Text="Your favourites" Style="{StaticResource PageTitle}" />
+        </VerticalStackLayout>
+
+        <CollectionView x:Name="favouritesList"
+                        Grid.Row="1"
+                        SelectionMode="Single"
+                        SelectionChanged="OnEventSelected"
+                        EmptyView="No favourites yet.&#10;Tap the heart on an event to add it here.">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:EventItem">
+                    <views:EventCard />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

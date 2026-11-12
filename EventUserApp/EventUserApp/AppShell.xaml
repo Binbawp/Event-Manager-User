@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- Navigation: two tabs (Events, Favourites). The details page is opened on top of them. -->
+<!-- Navigation: two tabs (Events, Favourites). The details page is opened on top of them.
+     Dark bars and a yellow accent, matching the rest of the app. -->
 <Shell
     x:Class="EventUserApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:EventUserApp.Pages"
-    Title="Event Assistant"
+    Title="Event Manager"
     Shell.FlyoutBehavior="Disabled"
-    Shell.BackgroundColor="{StaticResource BrandPrimary}"
-    Shell.ForegroundColor="White"
+    Shell.BackgroundColor="{StaticResource AppBackground}"
+    Shell.ForegroundColor="{StaticResource BrandPrimary}"
     Shell.TitleColor="White"
-    Shell.TabBarBackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+    Shell.NavBarHasShadow="False"
+    Shell.TabBarBackgroundColor="{StaticResource SurfaceColor}"
+    Shell.TabBarForegroundColor="{StaticResource BrandPrimary}"
     Shell.TabBarTitleColor="{StaticResource BrandPrimary}"
-    Shell.TabBarUnselectedColor="Gray">
+    Shell.TabBarUnselectedColor="#8A8A8A">
 
     <TabBar>
         <!-- ContentTemplate lets the app create each page itself and inject its services -->
         <ShellContent
             Title="Events"
+            Icon="tab_events.png"
             Route="EventsPage"
             ContentTemplate="{DataTemplate pages:EventsPage}" />
         <ShellContent
             Title="Favourites"
+            Icon="tab_favourites.png"
             Route="FavouritesPage"
             ContentTemplate="{DataTemplate pages:FavouritesPage}" />
     </TabBar>

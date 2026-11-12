@@ -1,28 +1,58 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Home tab: the events published by the admin app, with search (feature g). -->
+<!-- Home tab: the events published by the admin app, with search and filter chips (feature g). -->
 <ContentPage
     x:Class="EventUserApp.Pages.EventsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:models="clr-namespace:EventUserApp.Models"
     xmlns:views="clr-namespace:EventUserApp.Views"
-    Title="Events">
+    Title="Event Assistant"
+    BackgroundColor="{StaticResource AppBackground}">
 
-    <Grid RowDefinitions="Auto,Auto,*">
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
 
-        <SearchBar x:Name="searchBar"
-                   Grid.Row="0"
-                   Placeholder="Search by name or date (DD/MM/YYYY)"
-                   TextChanged="OnSearchTextChanged" />
+        <!-- Heading -->
+        <VerticalStackLayout Grid.Row="0" Padding="20,8,20,0" Spacing="2">
+            <Label Text="Welcome" Style="{StaticResource Caption}" />
+            <Label Text="Find your next event" Style="{StaticResource PageTitle}" />
+        </VerticalStackLayout>
+
+        <!-- Rounded search field: name or date -->
+        <Border Grid.Row="1" Style="{StaticResource SearchBox}" Margin="16,16,16,12">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" Padding="18,0,12,0">
+                <Label Text="&#x1F50D;" FontSize="16" VerticalOptions="Center" />
+                <Entry x:Name="searchBar"
+                       Grid.Column="1"
+                       Placeholder="Search by name or date"
+                       PlaceholderColor="{StaticResource TextMuted}"
+                       TextColor="White"
+                       ReturnType="Search"
+                       ClearButtonVisibility="WhileEditing"
+                       TextChanged="OnSearchTextChanged"
+                       SemanticProperties.Description="Search events by name or date" />
+            </Grid>
+        </Border>
+
+        <!-- Filter chips -->
+        <ScrollView Grid.Row="2" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout Spacing="10" Padding="16,0,16,12">
+                <Button x:Name="chipAll" Text="All" Style="{StaticResource ChipSelected}" Clicked="OnChipClicked" />
+                <Button x:Name="chipUpcoming" Text="Upcoming" Style="{StaticResource Chip}" Clicked="OnChipClicked" />
+                <Button x:Name="chipPast" Text="Past" Style="{StaticResource Chip}" Clicked="OnChipClicked" />
+            </HorizontalStackLayout>
+        </ScrollView>
 
         <!-- "You are offline..." or "Could not update..." message -->
         <Label x:Name="statusLabel"
-               Grid.Row="1"
+               Grid.Row="3"
                Style="{StaticResource StatusBanner}"
                IsVisible="False" />
 
         <!-- Pull down to reload from the cloud -->
-        <RefreshView x:Name="refreshView" Grid.Row="2" Refreshing="OnRefreshing">
+        <RefreshView x:Name="refreshView"
+                     Grid.Row="4"
+                     RefreshColor="{StaticResource BrandPrimary}"
+                     Refreshing="OnRefreshing">
             <CollectionView x:Name="eventsList"
                             SelectionMode="Single"
                             SelectionChanged="OnEventSelected">
@@ -35,7 +65,7 @@
         </RefreshView>
 
         <ActivityIndicator x:Name="busyIndicator"
-                           Grid.Row="2"
+                           Grid.Row="4"
                            IsVisible="False"
                            IsRunning="False"
                            HorizontalOptions="Center"

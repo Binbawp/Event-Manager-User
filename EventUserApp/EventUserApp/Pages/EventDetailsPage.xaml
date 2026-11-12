@@ -6,91 +6,152 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:models="clr-namespace:EventUserApp.Models"
     x:DataType="models:EventItem"
-    Title="Event details">
+    Title="Event details"
+    BackgroundColor="{StaticResource AppBackground}">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="16">
+    <Grid RowDefinitions="*,Auto">
 
-            <!-- Name and favourite star -->
-            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                <Label Text="{Binding Name}" Style="{StaticResource PageTitle}" VerticalOptions="Center" />
-                <Button Grid.Column="1"
-                        Text="{Binding FavouriteIcon}"
-                        Style="{StaticResource StarButton}"
-                        Clicked="OnFavouriteClicked"
-                        SemanticProperties.Description="Favourite"
-                        SemanticProperties.Hint="Adds or removes this event from your favourites" />
-            </Grid>
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="16,8,16,24" Spacing="16">
 
-            <!-- Event information; the optional rows are hidden when nothing was entered -->
-            <Border Style="{StaticResource CardBorder}">
-                <VerticalStackLayout Padding="16" Spacing="12">
+                <!-- Header card: date badge, session count, name and location -->
+                <Border HeightRequest="210" StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="28" />
+                    </Border.StrokeShape>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#4F5D00" Offset="0.0" />
+                            <GradientStop Color="#141414" Offset="0.85" />
+                        </LinearGradientBrush>
+                    </Border.Background>
 
-                    <VerticalStackLayout>
-                        <Label Text="Date" Style="{StaticResource Caption}" />
-                        <Label Text="{Binding Date}" Style="{StaticResource ValueText}" />
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout IsVisible="{Binding HasLocation}">
-                        <Label Text="Location" Style="{StaticResource Caption}" />
-                        <Label Text="{Binding Location}" Style="{StaticResource ValueText}" />
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout IsVisible="{Binding HasOrganiser}">
-                        <Label Text="Organiser" Style="{StaticResource Caption}" />
-                        <Label Text="{Binding Organiser}" Style="{StaticResource ValueText}" />
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout IsVisible="{Binding HasDescription}">
-                        <Label Text="Description" Style="{StaticResource Caption}" />
-                        <Label Text="{Binding Description}" Style="{StaticResource ValueText}" />
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout IsVisible="{Binding HasEmail}">
-                        <Label Text="Contact email" Style="{StaticResource Caption}" />
-                        <Label Text="{Binding ContactEmail}" Style="{StaticResource ValueText}" />
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout IsVisible="{Binding HasPhone}">
-                        <Label Text="Contact phone" Style="{StaticResource Caption}" />
-                        <Label Text="{Binding ContactPhone}" Style="{StaticResource ValueText}" />
-                    </VerticalStackLayout>
-                </VerticalStackLayout>
-            </Border>
-
-            <Button Text="Share this event"
-                    Style="{StaticResource PrimaryButton}"
-                    Clicked="OnShareClicked" />
-
-            <!-- Sessions -->
-            <Label Text="{Binding SessionsTitle}" Style="{StaticResource SectionTitle}" />
-
-            <Label Text="No sessions have been added to this event yet."
-                   Style="{StaticResource CardSubtitle}"
-                   IsVisible="{Binding HasNoSessions}" />
-
-            <!-- BindableLayout builds one card per session without a second scrolling list -->
-            <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Sessions}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="models:SessionItem">
-                        <Border Style="{StaticResource CardBorder}">
-                            <VerticalStackLayout Padding="16,12" Spacing="4">
-                                <Label Text="{Binding Name}" Style="{StaticResource CardTitle}" />
-                                <Label Text="{Binding MetaText}"
-                                       TextColor="{StaticResource BrandPrimary}"
-                                       FontSize="14" />
-                                <Label Text="{Binding PeopleText}"
-                                       Style="{StaticResource CardSubtitle}"
-                                       IsVisible="{Binding HasPeople}" />
-                                <Label Text="{Binding Description}"
-                                       FontSize="14"
-                                       IsVisible="{Binding HasDescription}" />
+                    <Grid Padding="20" RowDefinitions="Auto,*,Auto">
+                        <Border Style="{StaticResource DateBadge}"
+                                WidthRequest="64"
+                                HeightRequest="76"
+                                HorizontalOptions="Start">
+                            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                                <Label Text="{Binding DayText}"
+                                       TextColor="{StaticResource OnAccent}"
+                                       FontSize="26"
+                                       FontAttributes="Bold"
+                                       HorizontalTextAlignment="Center" />
+                                <Label Text="{Binding MonthText}"
+                                       TextColor="{StaticResource OnAccent}"
+                                       FontSize="12"
+                                       FontAttributes="Bold"
+                                       HorizontalTextAlignment="Center" />
                             </VerticalStackLayout>
                         </Border>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </VerticalStackLayout>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                        <Border Style="{StaticResource AccentPill}" HorizontalOptions="End" VerticalOptions="Start">
+                            <Label Text="{Binding SessionCountText}" Style="{StaticResource AccentPillText}" />
+                        </Border>
+
+                        <VerticalStackLayout Grid.Row="2" Spacing="4">
+                            <Label Text="{Binding Name}"
+                                   Style="{StaticResource PageTitle}"
+                                   MaxLines="3"
+                                   LineBreakMode="TailTruncation" />
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" IsVisible="{Binding HasLocation}">
+                                <Label Text="&#x1F4CD;" FontSize="13" VerticalOptions="Center" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding Location}"
+                                       Style="{StaticResource CardSubtitle}"
+                                       TextColor="White" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- About the event; the optional rows are hidden when nothing was entered -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Padding="20" Spacing="14">
+                        <Label Text="About event" Style="{StaticResource CardTitle}" FontSize="18" />
+
+                        <Label Text="{Binding Description}"
+                               Style="{StaticResource CardSubtitle}"
+                               FontSize="15"
+                               IsVisible="{Binding HasDescription}" />
+
+                        <VerticalStackLayout>
+                            <Label Text="Date" Style="{StaticResource Caption}" />
+                            <Label Text="{Binding Date}" Style="{StaticResource ValueText}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout IsVisible="{Binding HasOrganiser}">
+                            <Label Text="Organiser" Style="{StaticResource Caption}" />
+                            <Label Text="{Binding Organiser}" Style="{StaticResource ValueText}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout IsVisible="{Binding HasEmail}">
+                            <Label Text="Contact email" Style="{StaticResource Caption}" />
+                            <Label Text="{Binding ContactEmail}" Style="{StaticResource ValueText}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout IsVisible="{Binding HasPhone}">
+                            <Label Text="Contact phone" Style="{StaticResource Caption}" />
+                            <Label Text="{Binding ContactPhone}" Style="{StaticResource ValueText}" />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Sessions -->
+                <Label Text="{Binding SessionsTitle}" Style="{StaticResource SectionTitle}" />
+
+                <Label Text="No sessions have been added to this event yet."
+                       Style="{StaticResource CardSubtitle}"
+                       IsVisible="{Binding HasNoSessions}" />
+
+                <!-- BindableLayout builds one card per session without a second scrolling list -->
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Sessions}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:SessionItem">
+                            <Border Style="{StaticResource CardBorder}">
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16" Padding="18,14">
+                                    <Label Text="{Binding Time}"
+                                           TextColor="{StaticResource BrandPrimary}"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Start" />
+                                    <VerticalStackLayout Grid.Column="1" Spacing="5">
+                                        <Label Text="{Binding Name}" Style="{StaticResource CardTitle}" />
+                                        <Border Style="{StaticResource TypePill}" IsVisible="{Binding HasType}">
+                                            <Label Text="{Binding Type}" Style="{StaticResource TypePillText}" />
+                                        </Border>
+                                        <Label Text="{Binding PeopleText}"
+                                               Style="{StaticResource CardSubtitle}"
+                                               IsVisible="{Binding HasPeople}" />
+                                        <Label Text="{Binding Description}"
+                                               Style="{StaticResource CardSubtitle}"
+                                               TextColor="White"
+                                               IsVisible="{Binding HasDescription}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom bar: main action and favourite heart -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,Auto"
+              ColumnSpacing="12"
+              Padding="16,10,16,16"
+              BackgroundColor="{StaticResource AppBackground}">
+            <Button Text="Share event"
+                    Style="{StaticResource PrimaryButton}"
+                    Clicked="OnShareClicked" />
+            <Button Grid.Column="1"
+                    Text="{Binding FavouriteIcon}"
+                    Style="{StaticResource HeartCircle}"
+                    Clicked="OnFavouriteClicked"
+                    SemanticProperties.Description="Favourite"
+                    SemanticProperties.Hint="Adds or removes this event from your favourites" />
+        </Grid>
+    </Grid>
 </ContentPage>

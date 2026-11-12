@@ -66,8 +66,8 @@ public class EventItem : INotifyPropertyChanged
         }
     }
 
-    /// <summary>Filled star when favourite, outline star otherwise.</summary>
-    public string FavouriteIcon => _isFavourite ? "\u2605" : "\u2606";
+    /// <summary>Filled heart when favourite, outline heart otherwise.</summary>
+    public string FavouriteIcon => _isFavourite ? "\u2665" : "\u2661";
 
     // ---------------------------------------------------------------- display helpers
 
@@ -75,6 +75,15 @@ public class EventItem : INotifyPropertyChanged
     public DateTime? DateValue =>
         DateTime.TryParseExact(Date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var d)
             ? d : null;
+
+    /// <summary>Day of the month for the date badge, e.g. "12" ("--" if the date cannot be read).</summary>
+    public string DayText => DateValue?.ToString("dd", CultureInfo.InvariantCulture) ?? "--";
+
+    /// <summary>Short month for the date badge, e.g. "NOV".</summary>
+    public string MonthText => DateValue?.ToString("MMM", CultureInfo.InvariantCulture).ToUpperInvariant() ?? "";
+
+    /// <summary>True when the event date is before today (used by the "Past" filter).</summary>
+    public bool IsPast => DateValue.HasValue && DateValue.Value.Date < DateTime.Today;
 
     /// <summary>"12/11/2026 · Greenwich Tech Society"</summary>
     public string SubtitleText => string.Join(" \u00B7 ", new[] { Date, Organiser }.Where(p => p.Length > 0));

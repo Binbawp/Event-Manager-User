@@ -7,22 +7,59 @@
     xmlns:models="clr-namespace:EventUserApp.Models"
     x:DataType="models:EventItem">
 
-    <Border Style="{StaticResource CardBorder}" Margin="12,6">
-        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8" Padding="16,12">
+    <Border Style="{StaticResource CardBorder}" Margin="16,6">
+        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14" Padding="14">
 
-            <VerticalStackLayout Spacing="4" VerticalOptions="Center">
-                <Label Text="{Binding Name}" Style="{StaticResource CardTitle}" />
-                <Label Text="{Binding SubtitleText}" Style="{StaticResource CardSubtitle}" />
-                <Label Text="{Binding SessionCountText}"
-                       TextColor="{StaticResource BrandPrimary}"
-                       FontAttributes="Bold"
-                       FontSize="14" />
+            <!-- Date badge: day and month -->
+            <Border Style="{StaticResource DateBadge}"
+                    WidthRequest="64"
+                    HeightRequest="76"
+                    VerticalOptions="Start">
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="{Binding DayText}"
+                           TextColor="{StaticResource OnAccent}"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="{Binding MonthText}"
+                           TextColor="{StaticResource OnAccent}"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                <Label Text="{Binding Name}"
+                       Style="{StaticResource CardTitle}"
+                       MaxLines="2"
+                       LineBreakMode="TailTruncation" />
+
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" IsVisible="{Binding HasLocation}">
+                    <Label Text="&#x1F4CD;" FontSize="13" VerticalOptions="Center" />
+                    <Label Grid.Column="1"
+                           Text="{Binding Location}"
+                           Style="{StaticResource CardSubtitle}"
+                           LineBreakMode="TailTruncation"
+                           MaxLines="1" />
+                </Grid>
+
+                <Label Text="{Binding Organiser}"
+                       Style="{StaticResource CardSubtitle}"
+                       FontSize="13"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="1"
+                       IsVisible="{Binding HasOrganiser}" />
+
+                <Border Style="{StaticResource AccentPill}" Margin="0,2,0,0">
+                    <Label Text="{Binding SessionCountText}" Style="{StaticResource AccentPillText}" />
+                </Border>
             </VerticalStackLayout>
 
-            <!-- Favourite star: filled when favourite -->
-            <Button Grid.Column="1"
+            <!-- Favourite heart: filled when favourite -->
+            <Button Grid.Column="2"
                     Text="{Binding FavouriteIcon}"
-                    Style="{StaticResource StarButton}"
+                    Style="{StaticResource HeartButton}"
                     Clicked="OnStarClicked"
                     SemanticProperties.Description="Favourite"
                     SemanticProperties.Hint="Adds or removes this event from your favourites" />
