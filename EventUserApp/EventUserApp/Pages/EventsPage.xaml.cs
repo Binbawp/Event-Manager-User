@@ -36,6 +36,12 @@ public partial class EventsPage : ContentPage
         await LoadEventsAsync(pulledToRefresh: true);
     }
 
+    /// <summary>The round refresh button in the header: starts the same reload as pulling the list down.</summary>
+    private void OnRefreshClicked(object? sender, EventArgs e)
+    {
+        refreshView.IsRefreshing = true;     // this raises the Refreshing event above
+    }
+
     /// <param name="pulledToRefresh">true when the user pulled the list down (it shows its own spinner)</param>
     private async Task LoadEventsAsync(bool pulledToRefresh)
     {

@@ -12,7 +12,7 @@
     <Grid RowDefinitions="*,Auto">
 
         <ScrollView Grid.Row="0">
-            <VerticalStackLayout Padding="16,8,16,24" Spacing="16">
+            <VerticalStackLayout Padding="18,8,18,24" Spacing="16">
 
                 <!-- Header card: date badge, session count, name and location -->
                 <Border HeightRequest="210" StrokeThickness="0">
@@ -21,8 +21,8 @@
                     </Border.StrokeShape>
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#4F5D00" Offset="0.0" />
-                            <GradientStop Color="#141414" Offset="0.85" />
+                            <GradientStop Color="#6B7400" Offset="0.0" />
+                            <GradientStop Color="#141414" Offset="0.9" />
                         </LinearGradientBrush>
                     </Border.Background>
 
@@ -52,7 +52,8 @@
                         <VerticalStackLayout Grid.Row="2" Spacing="4">
                             <Label Text="{Binding Name}"
                                    Style="{StaticResource PageTitle}"
-                                   MaxLines="3"
+                                   FontSize="26"
+                                   MaxLines="2"
                                    LineBreakMode="TailTruncation" />
                             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" IsVisible="{Binding HasLocation}">
                                 <Label Text="&#x1F4CD;" FontSize="13" VerticalOptions="Center" />
@@ -112,7 +113,7 @@
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16" Padding="18,14">
                                     <Label Text="{Binding Time}"
                                            TextColor="{StaticResource BrandPrimary}"
-                                           FontSize="18"
+                                           FontSize="20"
                                            FontAttributes="Bold"
                                            VerticalOptions="Start" />
                                     <VerticalStackLayout Grid.Column="1" Spacing="5">

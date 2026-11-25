@@ -68,7 +68,7 @@
     </Style>
 
     <Style x:Key="TypePillText" TargetType="Label">
-        <Setter Property="TextColor" Value="{StaticResource BrandPrimary}" />
+        <Setter Property="TextColor" Value="White" />
         <Setter Property="FontSize" Value="12" />
     </Style>
 
@@ -76,17 +76,23 @@
     <Style x:Key="SearchBox" TargetType="Border">
         <Setter Property="StrokeThickness" Value="0" />
         <Setter Property="BackgroundColor" Value="{StaticResource SurfaceColor}" />
-        <Setter Property="HeightRequest" Value="52" />
+        <Setter Property="HeightRequest" Value="48" />
         <Setter Property="StrokeShape">
             <Setter.Value>
-                <RoundRectangle CornerRadius="26" />
+                <RoundRectangle CornerRadius="24" />
             </Setter.Value>
         </Setter>
     </Style>
 
     <!-- ===== Text ===== -->
     <Style x:Key="PageTitle" TargetType="Label">
-        <Setter Property="FontSize" Value="26" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
+    <!-- "Event Manager" line at the very top of the tab pages -->
+    <Style x:Key="AppHeaderTitle" TargetType="Label">
+        <Setter Property="FontSize" Value="22" />
         <Setter Property="FontAttributes" Value="Bold" />
     </Style>
 
@@ -110,12 +116,34 @@
     </Style>
 
     <Style x:Key="SectionTitle" TargetType="Label">
-        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontSize" Value="22" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="Margin" Value="0,8,0,0" />
     </Style>
 
     <!-- ===== Buttons ===== -->
+    <!-- Round dark icon button in the top-right corner (like the admin app's cloud button) -->
+    <Style x:Key="CircleIconButton" TargetType="ImageButton">
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceHighColor}" />
+        <Setter Property="CornerRadius" Value="24" />
+        <Setter Property="Padding" Value="13" />
+        <Setter Property="WidthRequest" Value="48" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <!-- The favourite heart on a card: round dark button with a yellow icon (like the admin card's edit button) -->
+    <Style x:Key="CardHeart" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceHighColor}" />
+        <Setter Property="TextColor" Value="{StaticResource BrandPrimary}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="CornerRadius" Value="22" />
+        <Setter Property="WidthRequest" Value="44" />
+        <Setter Property="HeightRequest" Value="44" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
     <!-- The favourite heart on a card (no background) -->
     <Style x:Key="HeartButton" TargetType="Button">
         <Setter Property="BackgroundColor" Value="Transparent" />

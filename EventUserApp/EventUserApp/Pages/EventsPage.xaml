@@ -7,20 +7,29 @@
     xmlns:models="clr-namespace:EventUserApp.Models"
     xmlns:views="clr-namespace:EventUserApp.Views"
     Title="Event Assistant"
+    Shell.NavBarIsVisible="False"
     BackgroundColor="{StaticResource AppBackground}">
 
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*">
 
-        <!-- Heading -->
-        <VerticalStackLayout Grid.Row="0" Padding="20,8,20,0" Spacing="2">
-            <Label Text="Welcome" Style="{StaticResource Caption}" />
+        <!-- Header: app name + round refresh button, then greeting and page title (same as the admin app) -->
+        <VerticalStackLayout Grid.Row="0" Padding="20,12,20,0" Spacing="0">
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Event Manager" Style="{StaticResource AppHeaderTitle}" VerticalOptions="Center" />
+                <ImageButton Grid.Column="1"
+                             Source="icon_refresh.png"
+                             Style="{StaticResource CircleIconButton}"
+                             Clicked="OnRefreshClicked"
+                             SemanticProperties.Description="Refresh events" />
+            </Grid>
+            <Label Text="Welcome" Style="{StaticResource Caption}" FontSize="15" Margin="0,22,0,0" />
             <Label Text="Find your next event" Style="{StaticResource PageTitle}" />
         </VerticalStackLayout>
 
         <!-- Rounded search field: name or date -->
-        <Border Grid.Row="1" Style="{StaticResource SearchBox}" Margin="16,16,16,12">
+        <Border Grid.Row="1" Style="{StaticResource SearchBox}" Margin="18,18,18,14">
             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" Padding="18,0,12,0">
-                <Label Text="&#x1F50D;" FontSize="16" VerticalOptions="Center" />
+                <Image Source="icon_search.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center" />
                 <Entry x:Name="searchBar"
                        Grid.Column="1"
                        Placeholder="Search by name or date"
@@ -35,7 +44,7 @@
 
         <!-- Filter chips -->
         <ScrollView Grid.Row="2" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
-            <HorizontalStackLayout Spacing="10" Padding="16,0,16,12">
+            <HorizontalStackLayout Spacing="10" Padding="18,0,18,14">
                 <Button x:Name="chipAll" Text="All" Style="{StaticResource ChipSelected}" Clicked="OnChipClicked" />
                 <Button x:Name="chipUpcoming" Text="Upcoming" Style="{StaticResource Chip}" Clicked="OnChipClicked" />
                 <Button x:Name="chipPast" Text="Past" Style="{StaticResource Chip}" Clicked="OnChipClicked" />

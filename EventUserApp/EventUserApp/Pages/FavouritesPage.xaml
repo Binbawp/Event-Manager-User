@@ -7,12 +7,14 @@
     xmlns:models="clr-namespace:EventUserApp.Models"
     xmlns:views="clr-namespace:EventUserApp.Views"
     Title="Event Assistant"
+    Shell.NavBarIsVisible="False"
     BackgroundColor="{StaticResource AppBackground}">
 
     <Grid RowDefinitions="Auto,*">
 
-        <VerticalStackLayout Grid.Row="0" Padding="20,8,20,12" Spacing="2">
-            <Label Text="Saved for later" Style="{StaticResource Caption}" />
+        <VerticalStackLayout Grid.Row="0" Padding="20,12,20,14" Spacing="0">
+            <Label Text="Event Manager" Style="{StaticResource AppHeaderTitle}" HeightRequest="48" VerticalTextAlignment="Center" />
+            <Label Text="Saved for later" Style="{StaticResource Caption}" FontSize="15" Margin="0,22,0,0" />
             <Label Text="Your favourites" Style="{StaticResource PageTitle}" />
         </VerticalStackLayout>
 

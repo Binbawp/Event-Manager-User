@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- One event card, used by the Events list and the Favourites list. Its BindingContext is an EventItem. -->
+<!-- One event card, used by the Events list and the Favourites list. Its BindingContext is an EventItem.
+     Same layout as the admin app's card: yellow date tile, details, pill, round button on the right. -->
 <ContentView
     x:Class="EventUserApp.Views.EventCard"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -7,18 +8,18 @@
     xmlns:models="clr-namespace:EventUserApp.Models"
     x:DataType="models:EventItem">
 
-    <Border Style="{StaticResource CardBorder}" Margin="16,6">
+    <Border Style="{StaticResource CardBorder}" Margin="18,5">
         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14" Padding="14">
 
             <!-- Date badge: day and month -->
             <Border Style="{StaticResource DateBadge}"
-                    WidthRequest="64"
-                    HeightRequest="76"
+                    WidthRequest="60"
+                    HeightRequest="60"
                     VerticalOptions="Start">
-                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="0">
                     <Label Text="{Binding DayText}"
                            TextColor="{StaticResource OnAccent}"
-                           FontSize="26"
+                           FontSize="22"
                            FontAttributes="Bold"
                            HorizontalTextAlignment="Center" />
                     <Label Text="{Binding MonthText}"
@@ -29,7 +30,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+            <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
                 <Label Text="{Binding Name}"
                        Style="{StaticResource CardTitle}"
                        MaxLines="2"
@@ -56,10 +57,10 @@
                 </Border>
             </VerticalStackLayout>
 
-            <!-- Favourite heart: filled when favourite -->
+            <!-- Favourite heart in a round dark button: filled when favourite -->
             <Button Grid.Column="2"
                     Text="{Binding FavouriteIcon}"
-                    Style="{StaticResource HeartButton}"
+                    Style="{StaticResource CardHeart}"
                     Clicked="OnStarClicked"
                     SemanticProperties.Description="Favourite"
                     SemanticProperties.Hint="Adds or removes this event from your favourites" />
