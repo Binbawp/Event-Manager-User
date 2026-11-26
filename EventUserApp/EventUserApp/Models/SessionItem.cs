@@ -1,6 +1,6 @@
 namespace EventUserApp.Models;
 
-/// <summary>A session as shown on the event details page.</summary>
+/// <summary>Represents a session displayed on the event details page.</summary>
 public class SessionItem
 {
     public SessionItem(SessionDto dto)
@@ -20,10 +20,10 @@ public class SessionItem
     public string Type { get; }
     public string Description { get; }
 
-    /// <summary>"09:00 · Workshop"</summary>
+    /// <summary>Gets the formatted session time and type.</summary>
     public string MetaText => JoinNonEmpty(" \u00B7 ", Time, Type);
 
-    /// <summary>"Speaker: Dr Lee · Room: B2" (only the parts that were entered)</summary>
+    /// <summary>Gets the formatted speaker and room details supplied for the session.</summary>
     public string PeopleText => JoinNonEmpty(" \u00B7 ",
         Speaker.Length > 0 ? $"Speaker: {Speaker}" : "",
         Room.Length > 0 ? $"Room: {Room}" : "");

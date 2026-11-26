@@ -6,7 +6,7 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        // The design is dark-only, so ignore the phone's light/dark setting
+        // Enforce the application's dark-only theme regardless of the device setting.
         UserAppTheme = AppTheme.Dark;
     }
 

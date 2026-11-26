@@ -3,8 +3,7 @@ using EventUserApp.Models;
 namespace EventUserApp.Pages;
 
 /// <summary>
-/// Receives the tapped event through Shell navigation (Lecture 9, passing data):
-/// the "Event" query parameter fills the SelectedEvent property, which becomes the page's data.
+/// Receives event details through Shell navigation and presents them on the details page.
 /// </summary>
 [QueryProperty(nameof(SelectedEvent), "Event")]
 public partial class EventDetailsPage : ContentPage
@@ -26,7 +25,7 @@ public partial class EventDetailsPage : ContentPage
         }
     }
 
-    /// <summary>Opens the details page for an event (used by both lists).</summary>
+    /// <summary>Opens the details page for the selected event.</summary>
     public static Task OpenAsync(EventItem item)
     {
         return Shell.Current.GoToAsync(nameof(EventDetailsPage),
@@ -41,7 +40,7 @@ public partial class EventDetailsPage : ContentPage
         }
     }
 
-    /// <summary>Opens the phone's share sheet with the event's details as text.</summary>
+    /// <summary>Opens the platform share sheet with the formatted event details.</summary>
     private async void OnShareClicked(object? sender, EventArgs e)
     {
         if (_selectedEvent == null)

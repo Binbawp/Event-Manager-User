@@ -17,7 +17,7 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        // Dependency injection: one shared EventService, and the pages that receive it
+        // Register application services and pages for dependency injection.
         builder.Services.AddSingleton<EventService>();
         builder.Services.AddTransient<EventsPage>();
         builder.Services.AddTransient<FavouritesPage>();

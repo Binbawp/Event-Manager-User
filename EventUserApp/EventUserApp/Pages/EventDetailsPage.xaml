@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Full details of one event and its sessions. BindingContext = the selected EventItem. -->
+<!-- Displays event details and sessions for the selected EventItem. -->
 <ContentPage
     x:Class="EventUserApp.Pages.EventDetailsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -14,7 +14,7 @@
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Padding="18,8,18,24" Spacing="16">
 
-                <!-- Header card: date badge, session count, name and location -->
+                <!-- Event summary card. -->
                 <Border HeightRequest="210" StrokeThickness="0">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="28" />
@@ -66,7 +66,7 @@
                     </Grid>
                 </Border>
 
-                <!-- About the event; the optional rows are hidden when nothing was entered -->
+                <!-- Event information with optional details. -->
                 <Border Style="{StaticResource CardBorder}">
                     <VerticalStackLayout Padding="20" Spacing="14">
                         <Label Text="About event" Style="{StaticResource CardTitle}" FontSize="18" />
@@ -98,14 +98,14 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <!-- Sessions -->
+                <!-- Session list. -->
                 <Label Text="{Binding SessionsTitle}" Style="{StaticResource SectionTitle}" />
 
                 <Label Text="No sessions have been added to this event yet."
                        Style="{StaticResource CardSubtitle}"
                        IsVisible="{Binding HasNoSessions}" />
 
-                <!-- BindableLayout builds one card per session without a second scrolling list -->
+                <!-- Render one card per session using BindableLayout. -->
                 <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Sessions}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="models:SessionItem">
@@ -138,7 +138,7 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Bottom bar: main action and favourite heart -->
+        <!-- Sharing and favourite actions. -->
         <Grid Grid.Row="1"
               ColumnDefinitions="*,Auto"
               ColumnSpacing="12"

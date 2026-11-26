@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- One event card, used by the Events list and the Favourites list. Its BindingContext is an EventItem.
-     Same layout as the admin app's card: yellow date tile, details, pill, round button on the right. -->
+<!-- Reusable event card for event lists and the favourites view. -->
 <ContentView
     x:Class="EventUserApp.Views.EventCard"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -11,7 +10,7 @@
     <Border Style="{StaticResource CardBorder}" Margin="18,5">
         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14" Padding="14">
 
-            <!-- Date badge: day and month -->
+            <!-- Date badge. -->
             <Border Style="{StaticResource DateBadge}"
                     WidthRequest="60"
                     HeightRequest="60"
@@ -57,7 +56,7 @@
                 </Border>
             </VerticalStackLayout>
 
-            <!-- Favourite heart in a round dark button: filled when favourite -->
+            <!-- Favourite button. -->
             <Button Grid.Column="2"
                     Text="{Binding FavouriteIcon}"
                     Style="{StaticResource CardHeart}"

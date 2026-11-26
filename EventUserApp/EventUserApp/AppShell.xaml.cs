@@ -8,7 +8,7 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
 
-        // The details page is not a tab, so its route is registered here
+        // Register the detail screen as a navigation route outside the tab layout.
         Routing.RegisterRoute(nameof(EventDetailsPage), typeof(EventDetailsPage));
     }
 }

@@ -3,16 +3,15 @@ using System.Text.Json;
 namespace EventUserApp.Services;
 
 /// <summary>
-/// Remembers which events the user marked as favourite (feature h).
-/// The ids are saved on the phone with MAUI Preferences (a small key/value store), so favourites
-/// survive closing the app and re-uploads from the admin app, because the event id never changes.
+/// Persists the user's favourite event identifiers using MAUI Preferences.
+/// Favourite selections remain available after application restarts and event updates.
 /// </summary>
 public static class FavouritesStore
 {
     private const string PreferenceKey = "favourite_event_ids";
     private static HashSet<string>? _ids;
 
-    /// <summary>Raised whenever a favourite is added or removed (the Favourites tab listens to it).</summary>
+    /// <summary>Raised when an event is added to or removed from favourites.</summary>
     public static event Action? Changed;
 
     private static HashSet<string> Ids => _ids ??= Load();
@@ -43,7 +42,7 @@ public static class FavouritesStore
         }
         catch (JsonException)
         {
-            return new HashSet<string>();   // damaged data: start with no favourites
+            return new HashSet<string>();   // Reset preferences when the stored data is invalid.
         }
     }
 }

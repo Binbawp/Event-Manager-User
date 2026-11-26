@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- Styles shared by every screen (Lecture 11).
-     Look: dark background, neon yellow accent, large rounded cards (event-discovery UI template). -->
+<!-- Shared styles for the application theme, cards, text, and controls. -->
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <!-- ===== Palette ===== -->
+    <!-- Colour palette -->
     <Color x:Key="AppBackground">#0B0B0B</Color>
     <Color x:Key="SurfaceColor">#1A1A1A</Color>
     <Color x:Key="SurfaceHighColor">#2A2A2A</Color>
@@ -13,7 +12,7 @@
     <Color x:Key="OnAccent">#0B0B0B</Color>
     <Color x:Key="TextMuted">#A0A0A0</Color>
 
-    <!-- ===== Cards ===== -->
+    <!-- Card styles -->
     <Style x:Key="CardBorder" TargetType="Border">
         <Setter Property="StrokeThickness" Value="0" />
         <Setter Property="BackgroundColor" Value="{StaticResource SurfaceColor}" />
@@ -24,7 +23,7 @@
         </Setter>
     </Style>
 
-    <!-- Yellow tile with the day and month of an event -->
+    <!-- Date badge style. -->
     <Style x:Key="DateBadge" TargetType="Border">
         <Setter Property="StrokeThickness" Value="0" />
         <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
@@ -35,7 +34,7 @@
         </Setter>
     </Style>
 
-    <!-- Small yellow pill (session count) -->
+    <!-- Session count badge style. -->
     <Style x:Key="AccentPill" TargetType="Border">
         <Setter Property="StrokeThickness" Value="0" />
         <Setter Property="BackgroundColor" Value="{StaticResource BrandPrimary}" />
@@ -54,7 +53,7 @@
         <Setter Property="FontAttributes" Value="Bold" />
     </Style>
 
-    <!-- Small grey pill (session type) -->
+    <!-- Session type badge style. -->
     <Style x:Key="TypePill" TargetType="Border">
         <Setter Property="StrokeThickness" Value="0" />
         <Setter Property="BackgroundColor" Value="{StaticResource SurfaceHighColor}" />
@@ -72,7 +71,7 @@
         <Setter Property="FontSize" Value="12" />
     </Style>
 
-    <!-- Rounded search field -->
+    <!-- Search field style. -->
     <Style x:Key="SearchBox" TargetType="Border">
         <Setter Property="StrokeThickness" Value="0" />
         <Setter Property="BackgroundColor" Value="{StaticResource SurfaceColor}" />
@@ -84,13 +83,13 @@
         </Setter>
     </Style>
 
-    <!-- ===== Text ===== -->
+    <!-- Text styles -->
     <Style x:Key="PageTitle" TargetType="Label">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="FontAttributes" Value="Bold" />
     </Style>
 
-    <!-- "Event Manager" line at the very top of the tab pages -->
+    <!-- Application header text style. -->
     <Style x:Key="AppHeaderTitle" TargetType="Label">
         <Setter Property="FontSize" Value="22" />
         <Setter Property="FontAttributes" Value="Bold" />
@@ -121,8 +120,8 @@
         <Setter Property="Margin" Value="0,8,0,0" />
     </Style>
 
-    <!-- ===== Buttons ===== -->
-    <!-- Round dark icon button in the top-right corner (like the admin app's cloud button) -->
+    <!-- Button styles -->
+    <!-- Circular icon button style. -->
     <Style x:Key="CircleIconButton" TargetType="ImageButton">
         <Setter Property="BackgroundColor" Value="{StaticResource SurfaceHighColor}" />
         <Setter Property="CornerRadius" Value="24" />
@@ -132,7 +131,7 @@
         <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
-    <!-- The favourite heart on a card: round dark button with a yellow icon (like the admin card's edit button) -->
+    <!-- Circular favourite button style for event cards. -->
     <Style x:Key="CardHeart" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource SurfaceHighColor}" />
         <Setter Property="TextColor" Value="{StaticResource BrandPrimary}" />
@@ -144,7 +143,7 @@
         <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
-    <!-- The favourite heart on a card (no background) -->
+    <!-- Transparent favourite button style. -->
     <Style x:Key="HeartButton" TargetType="Button">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{StaticResource BrandPrimary}" />
@@ -155,7 +154,7 @@
         <Setter Property="VerticalOptions" Value="Start" />
     </Style>
 
-    <!-- The round heart button next to the main button on the details page -->
+    <!-- Circular favourite button style for the details page. -->
     <Style x:Key="HeartCircle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource SurfaceHighColor}" />
         <Setter Property="TextColor" Value="{StaticResource BrandPrimary}" />
@@ -175,7 +174,7 @@
         <Setter Property="HeightRequest" Value="56" />
     </Style>
 
-    <!-- Filter chips on the Events page -->
+    <!-- Event filter chip styles. -->
     <Style x:Key="Chip" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource SurfaceColor}" />
         <Setter Property="TextColor" Value="White" />
@@ -191,7 +190,7 @@
         <Setter Property="FontAttributes" Value="Bold" />
     </Style>
 
-    <!-- Offline / error message strip above the list -->
+    <!-- Offline and error status banner style. -->
     <Style x:Key="StatusBanner" TargetType="Label">
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Padding" Value="14,10" />

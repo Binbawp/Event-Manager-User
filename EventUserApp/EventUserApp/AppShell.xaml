@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- Navigation: two tabs (Events, Favourites). The details page is opened on top of them.
-     Dark bars and a yellow accent, matching the rest of the app. -->
+<!-- Application navigation with Events and Favourites tabs and a dark, accent-colored shell. -->
 <Shell
     x:Class="EventUserApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -18,7 +17,7 @@
     Shell.TabBarUnselectedColor="#8A8A8A">
 
     <TabBar>
-        <!-- ContentTemplate lets the app create each page itself and inject its services -->
+        <!-- Create each tab page through its configured content template. -->
         <ShellContent
             Title="Events"
             Icon="tab_events.png"

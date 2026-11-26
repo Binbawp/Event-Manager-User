@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Second tab: only the events the user marked with the heart (feature h). -->
+<!-- Displays events that the user has marked as favourites. -->
 <ContentPage
     x:Class="EventUserApp.Pages.FavouritesPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"

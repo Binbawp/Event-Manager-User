@@ -9,7 +9,7 @@ public partial class EventCard : ContentView
         InitializeComponent();
     }
 
-    /// <summary>Toggles the favourite flag; the star on every screen updates by itself.</summary>
+    /// <summary>Toggles the event's favourite status and synchronizes all displayed cards.</summary>
     private void OnStarClicked(object? sender, EventArgs e)
     {
         if (BindingContext is EventItem item)

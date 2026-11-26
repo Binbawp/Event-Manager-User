@@ -4,14 +4,12 @@ using EventUserApp.Models;
 namespace EventUserApp.Services;
 
 /// <summary>
-/// Loads the events published by the Android admin app from the Firebase Realtime Database.
-/// The last successful download is saved in a file, so the app can still show events when the
-/// phone is offline (extra feature).
-/// One instance is shared by the whole app, so every screen sees the same EventItem objects.
+/// Retrieves event data from the Firebase Realtime Database and maintains a local offline cache.
+/// A single service instance is shared across the application.
 /// </summary>
 public class EventService
 {
-    /// <summary>Same database the admin app uploads to.</summary>
+    /// <summary>The Firebase database endpoint used by the admin application.</summary>
     private const string EventsUrl =
         "https://event-manager-ac75b-default-rtdb.asia-southeast1.firebasedatabase.app/events.json";
 
@@ -21,18 +19,17 @@ public class EventService
 
     private static string CacheFilePath => Path.Combine(FileSystem.AppDataDirectory, "events_cache.json");
 
-    /// <summary>The events from the last load, earliest date first.</summary>
+    /// <summary>The loaded events, ordered by date from earliest to latest.</summary>
     public List<EventItem> Events { get; private set; } = new();
 
-    /// <summary>True when the list came from the saved copy because the cloud could not be reached.</summary>
+    /// <summary>Indicates whether the event list is from the local offline cache.</summary>
     public bool IsShowingCachedData { get; private set; }
 
-    /// <summary>When the data shown was downloaded.</summary>
+    /// <summary>The date and time when the displayed data was retrieved or cached.</summary>
     public DateTime? LastUpdated { get; private set; }
 
     /// <summary>
-    /// Downloads the events (or reads the saved copy if offline). Throws if there is no way to
-    /// get any data, so the page can show an error message.
+    /// Downloads events from Firebase or loads the cached copy when network access is unavailable.
     /// </summary>
     public async Task LoadEventsAsync()
     {
@@ -45,13 +42,13 @@ public class EventService
             }
 
             json = await _http.GetStringAsync(EventsUrl);
-            await File.WriteAllTextAsync(CacheFilePath, json);   // keep a copy for offline use
+            await File.WriteAllTextAsync(CacheFilePath, json);   // Cache the latest successful download.
             IsShowingCachedData = false;
             LastUpdated = DateTime.Now;
         }
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
         {
-            // Offline, time-out or server refused: fall back to the saved copy if there is one
+            // Fall back to the cached copy when network access or the remote server is unavailable.
             if (!File.Exists(CacheFilePath))
             {
                 throw;
@@ -64,10 +61,10 @@ public class EventService
         Events = ParseEvents(json);
     }
 
-    /// <summary>Turns the Firebase JSON (a dictionary of events keyed by id) into a sorted list.</summary>
+    /// <summary>Converts the Firebase JSON response into a sorted list of event items.</summary>
     private static List<EventItem> ParseEvents(string json)
     {
-        // An empty database is returned by Firebase as the text "null", which gives a null result here
+        // Firebase returns "null" when the event database has no entries.
         var dtos = JsonSerializer.Deserialize<Dictionary<string, EventDto?>>(json, JsonOptions);
         if (dtos == null)
         {
@@ -77,7 +74,7 @@ public class EventService
         return dtos
             .Where(pair => pair.Value != null)
             .Select(pair => new EventItem(pair.Key, pair.Value!))
-            .OrderBy(e => e.DateValue ?? DateTime.MaxValue)   // events with an unreadable date go last
+            .OrderBy(e => e.DateValue ?? DateTime.MaxValue)   // Place entries with invalid dates last.
             .ThenBy(e => e.Name)
             .ToList();
     }

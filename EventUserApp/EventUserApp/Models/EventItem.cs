@@ -7,9 +7,8 @@ using EventUserApp.Services;
 namespace EventUserApp.Models;
 
 /// <summary>
-/// An event as the app uses it: the data from the cloud plus a few ready-made text properties
-/// for the screens and the favourite flag. It notifies the UI when the favourite flag changes,
-/// so the star updates on every screen that shows this event.
+/// Represents an event in the application, including display properties and favourite status.
+/// Property-change notifications keep all event views synchronized.
 /// </summary>
 public class EventItem : INotifyPropertyChanged
 {
@@ -26,7 +25,7 @@ public class EventItem : INotifyPropertyChanged
         ContactEmail = dto.ContactEmail ?? "";
         ContactPhone = dto.ContactPhone ?? "";
 
-        // Sessions come as a dictionary (s1, s2, ...): keep the values, ordered by start time
+        // Convert session entries into a list ordered by start time and name.
         Sessions = (dto.Sessions?.Values ?? Enumerable.Empty<SessionDto?>())
             .OfType<SessionDto>()
             .Select(s => new SessionItem(s))
@@ -34,10 +33,10 @@ public class EventItem : INotifyPropertyChanged
             .ThenBy(s => s.Name)
             .ToList();
 
-        _isFavourite = FavouritesStore.Contains(id);   // restore the saved favourite state
+        _isFavourite = FavouritesStore.Contains(id);   // Restore the persisted favourite status.
     }
 
-    /// <summary>The Firebase key (a UUID created by the admin app). Stays the same between uploads.</summary>
+    /// <summary>The stable Firebase identifier assigned by the admin application.</summary>
     public string Id { get; }
     public string Name { get; }
     public string Date { get; }
@@ -48,7 +47,7 @@ public class EventItem : INotifyPropertyChanged
     public string ContactPhone { get; }
     public List<SessionItem> Sessions { get; }
 
-    // ---------------------------------------------------------------- favourites (feature h)
+    // Favourite status
 
     public bool IsFavourite
     {
@@ -60,32 +59,32 @@ public class EventItem : INotifyPropertyChanged
                 return;
             }
             _isFavourite = value;
-            FavouritesStore.Set(Id, value);              // save on the phone
+            FavouritesStore.Set(Id, value);              // Persist the updated favourite status.
             OnPropertyChanged();
             OnPropertyChanged(nameof(FavouriteIcon));
         }
     }
 
-    /// <summary>Filled heart when favourite, outline heart otherwise.</summary>
+    /// <summary>Returns the filled or outlined heart icon according to favourite status.</summary>
     public string FavouriteIcon => _isFavourite ? "\u2665" : "\u2661";
 
-    // ---------------------------------------------------------------- display helpers
+    // Display helpers
 
-    /// <summary>The date as a DateTime for sorting; null if the text is not a valid DD/MM/YYYY.</summary>
+    /// <summary>Gets the parsed event date, or null when the stored date is invalid.</summary>
     public DateTime? DateValue =>
         DateTime.TryParseExact(Date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var d)
             ? d : null;
 
-    /// <summary>Day of the month for the date badge, e.g. "12" ("--" if the date cannot be read).</summary>
+    /// <summary>Gets the day number for the date badge, or "--" for an invalid date.</summary>
     public string DayText => DateValue?.ToString("dd", CultureInfo.InvariantCulture) ?? "--";
 
-    /// <summary>Short month for the date badge, e.g. "NOV".</summary>
+    /// <summary>Gets the abbreviated month name for the date badge.</summary>
     public string MonthText => DateValue?.ToString("MMM", CultureInfo.InvariantCulture).ToUpperInvariant() ?? "";
 
-    /// <summary>True when the event date is before today (used by the "Past" filter).</summary>
+    /// <summary>Indicates whether the event date is earlier than the current date.</summary>
     public bool IsPast => DateValue.HasValue && DateValue.Value.Date < DateTime.Today;
 
-    /// <summary>"12/11/2026 · Greenwich Tech Society"</summary>
+    /// <summary>Gets the formatted event date and organiser text.</summary>
     public string SubtitleText => string.Join(" \u00B7 ", new[] { Date, Organiser }.Where(p => p.Length > 0));
 
     public string SessionCountText => Sessions.Count == 1 ? "1 session" : $"{Sessions.Count} sessions";
@@ -98,12 +97,12 @@ public class EventItem : INotifyPropertyChanged
     public bool HasPhone => ContactPhone.Length > 0;
     public bool HasNoSessions => Sessions.Count == 0;
 
-    /// <summary>True if the search text appears in the event name or date (ignoring upper/lower case).</summary>
+    /// <summary>Determines whether the event name or date contains the search text.</summary>
     public bool Matches(string query) =>
         Name.Contains(query, StringComparison.OrdinalIgnoreCase)
         || Date.Contains(query, StringComparison.OrdinalIgnoreCase);
 
-    /// <summary>The text sent to other apps by the Share button.</summary>
+    /// <summary>Gets the formatted event summary shared through external applications.</summary>
     public string ShareText
     {
         get

@@ -16,7 +16,7 @@ public partial class FavouritesPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        FavouritesStore.Changed += RefreshList;   // un-starring an event removes it from this list at once
+        FavouritesStore.Changed += RefreshList;   // Refresh immediately when a favourite is removed.
         RefreshList();
     }
 

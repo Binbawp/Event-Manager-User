@@ -9,7 +9,7 @@ public partial class EventsPage : ContentPage
     private bool _hasLoadedOnce;
     private bool _lastLoadFailed;
 
-    /// <summary>Which chip is selected above the list.</summary>
+    /// <summary>Defines the date filter selected above the event list.</summary>
     private enum DateFilter { All, Upcoming, Past }
     private DateFilter _dateFilter = DateFilter.All;
 
@@ -19,7 +19,7 @@ public partial class EventsPage : ContentPage
         _eventService = eventService;
     }
 
-    /// <summary>The first time the page appears, load the events from the cloud.</summary>
+    /// <summary>Loads event data from the cloud when the page first appears.</summary>
     protected override async void OnAppearing()
     {
         base.OnAppearing();
@@ -36,13 +36,13 @@ public partial class EventsPage : ContentPage
         await LoadEventsAsync(pulledToRefresh: true);
     }
 
-    /// <summary>The round refresh button in the header: starts the same reload as pulling the list down.</summary>
+    /// <summary>Triggers an event refresh through the refresh control.</summary>
     private void OnRefreshClicked(object? sender, EventArgs e)
     {
-        refreshView.IsRefreshing = true;     // this raises the Refreshing event above
+        refreshView.IsRefreshing = true;     // Raising the refresh state invokes the Refreshing event.
     }
 
-    /// <param name="pulledToRefresh">true when the user pulled the list down (it shows its own spinner)</param>
+    /// <param name="pulledToRefresh">Indicates whether refresh was initiated by pull-to-refresh.</param>
     private async Task LoadEventsAsync(bool pulledToRefresh)
     {
         if (!pulledToRefresh)
@@ -58,7 +58,7 @@ public partial class EventsPage : ContentPage
         }
         catch (Exception ex)
         {
-            // No internet and no saved copy, or the server refused: keep whatever is already shown
+            // Preserve the currently displayed data and record the unsuccessful update.
             _lastLoadFailed = true;
             System.Diagnostics.Debug.WriteLine($"Loading events failed: {ex.Message}");
         }
@@ -78,7 +78,7 @@ public partial class EventsPage : ContentPage
         ApplyFilter();
     }
 
-    /// <summary>The user tapped All / Upcoming / Past: remember it, restyle the chips and refilter.</summary>
+    /// <summary>Updates the selected date filter and reapplies filtering to the event list.</summary>
     private void OnChipClicked(object? sender, EventArgs e)
     {
         _dateFilter = sender == chipUpcoming ? DateFilter.Upcoming
@@ -91,7 +91,7 @@ public partial class EventsPage : ContentPage
         ApplyFilter();
     }
 
-    /// <summary>Yellow chip when selected, dark chip otherwise.</summary>
+    /// <summary>Applies the selected or unselected visual style to a filter chip.</summary>
     private static void SetChipStyle(Button chip, bool selected)
     {
         string key = selected ? "ChipSelected" : "Chip";
@@ -101,7 +101,7 @@ public partial class EventsPage : ContentPage
         }
     }
 
-    /// <summary>Shows only the events that match the selected chip and contain the search text in name or date.</summary>
+    /// <summary>Applies the selected date filter and search text to the event list.</summary>
     private void ApplyFilter()
     {
         string query = searchBar.Text?.Trim() ?? "";
@@ -118,7 +118,7 @@ public partial class EventsPage : ContentPage
             : source.Where(ev => ev.Matches(query)).ToList();
         eventsList.ItemsSource = items;
 
-        // What the list says when it has nothing to show
+        // Configure the message displayed when the event list is empty.
         if (_lastLoadFailed && _eventService.Events.Count == 0)
         {
             eventsList.EmptyView = "Could not load events.\nCheck your internet connection and pull down to try again.";
@@ -155,7 +155,7 @@ public partial class EventsPage : ContentPage
     {
         if (e.CurrentSelection.FirstOrDefault() is EventItem selected)
         {
-            eventsList.SelectedItem = null;          // so the same event can be tapped again later
+            eventsList.SelectedItem = null;          // Allow the same event to be selected again later.
             await EventDetailsPage.OpenAsync(selected);
         }
     }
